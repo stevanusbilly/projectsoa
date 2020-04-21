@@ -1,0 +1,843 @@
+{
+	"info": {
+		"_postman_id": "3588abfb-fd87-4af5-9e82-6be59082edb8",
+		"name": "proyek",
+		"description": "proyek SOA dengan tema cuaca menggunakan API third party yaitu https://www.weatherbit.io/api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "post",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id_user",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/registerUser",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"registerUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "haha@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "haha",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get Current Weahter",
+			"item": [
+				{
+					"name": "Get Current Weather",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "kota",
+									"value": "blitar",
+									"type": "text"
+								},
+								{
+									"key": "negara",
+									"value": "Indonesia",
+									"type": "text"
+								}
+							],
+							"options": {
+								"urlencoded": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/currentWeather",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"currentWeather"
+							]
+						},
+						"description": "kota parameter default,\nnegara parameter Optional"
+					},
+					"response": []
+				}
+			],
+			"description": "Mendapatkan cuaca pada suatu kota saat ini",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get Alert",
+			"item": [
+				{
+					"name": "Get Alert by City and Country",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "kota",
+									"value": "bandung",
+									"type": "text"
+								},
+								{
+									"key": "negara",
+									"value": "indonesia",
+									"type": "text"
+								}
+							],
+							"options": {
+								"urlencoded": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/getAlertByCity",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getAlertByCity"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "141",
+									"disabled": true
+								},
+								{
+									"key": "longitude",
+									"value": "100",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Mendapatkan Peringatan Cuaca pada kota dan negara. kota parameter default, negara parameter optional."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Alert by Position",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "latitude",
+									"value": "38.01",
+									"type": "text"
+								},
+								{
+									"key": "Longitude",
+									"value": "-90.01",
+									"type": "text"
+								}
+							],
+							"options": {
+								"urlencoded": {}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/getAlertByPosition",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getAlertByPosition"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "141",
+									"disabled": true
+								},
+								{
+									"key": "longitude",
+									"value": "100",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Mendapatkan peringatan cuaca pada suatu tempat berdasarkan posisi.\nlatitude dan longitude merupakan parameter default"
+					},
+					"response": []
+				}
+			],
+			"description": "Mendapatkan Cuaca pada suatu kota saat ini",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get Air Quality",
+			"item": [
+				{
+					"name": "Get Air Quality by Position",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "latitude",
+									"value": "-8.1676",
+									"type": "text"
+								},
+								{
+									"key": "Longitude",
+									"value": "111.7844",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getAirQualityByPosition",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getAirQualityByPosition"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "141",
+									"disabled": true
+								},
+								{
+									"key": "longitude",
+									"value": "100",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Air Quality by City and Country",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "kota",
+									"value": "bandung",
+									"type": "text"
+								},
+								{
+									"key": "negara",
+									"value": "indonesia",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getAirQualityByCity",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getAirQualityByCity"
+							],
+							"query": [
+								{
+									"key": "latitude",
+									"value": "141",
+									"disabled": true
+								},
+								{
+									"key": "longitude",
+									"value": "100",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Historical Air Quality by Position",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "latitude",
+									"value": "35.7721",
+									"type": "text"
+								},
+								{
+									"key": "longitude",
+									"value": "-78.63861",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getHistoricalAirQualitybyPosition/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getHistoricalAirQualitybyPosition",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Historical Air Quality by City",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "kota",
+									"value": "Raleigh",
+									"type": "text"
+								},
+								{
+									"key": "negara",
+									"value": "US",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getHistoricalAirQualitybyCity/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getHistoricalAirQualitybyCity",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Mendapatkan kualitas udara pada suatu tempat",
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get Forecast 16 Day",
+			"item": [
+				{
+					"name": "Get Forecast by City",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "kota",
+									"value": "Raleigh",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/get16dayforecast",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"get16dayforecast"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Forecast by Position",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "lat",
+									"value": "35.7721",
+									"type": "text"
+								},
+								{
+									"key": "lon",
+									"value": "-78.63861",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getForecastbyPosition",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getForecastbyPosition"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Forecast by Postal Code",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "postalcode",
+									"value": "27601",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getForecastbyPostalCode",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getForecastbyPostalCode"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Forecast by Station",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "station",
+									"value": "KRDU",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getForecastbyStation",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getForecastbyStation"
+							],
+							"query": [
+								{
+									"key": "station",
+									"value": "KRDU",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Forecast by City ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "city_id",
+									"value": "8953360",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getForecastbyCityId",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getForecastbyCityId"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get Position",
+			"item": [
+				{
+					"name": "Get Latitude and Longitude",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "kota",
+									"value": "mexico",
+									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getlatlod",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getlatlod"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get Historical Weather Daily",
+			"item": [
+				{
+					"name": "get Historical Weather Daily by Position",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "latitude",
+									"value": "35.7721",
+									"type": "text"
+								},
+								{
+									"key": "longitude",
+									"value": "-78.63861",
+									"type": "text"
+								},
+								{
+									"key": "start",
+									"value": "2020-04-14",
+									"type": "text"
+								},
+								{
+									"key": "end",
+									"value": "2020-04-15",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getHistoricalWeatherDailybyPosition/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getHistoricalWeatherDailybyPosition",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Historical Weather Daily by City",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "kota",
+									"value": "Raleigh",
+									"type": "text"
+								},
+								{
+									"key": "negara",
+									"value": "US",
+									"type": "text"
+								},
+								{
+									"key": "start",
+									"value": "2020-04-14",
+									"type": "text"
+								},
+								{
+									"key": "end",
+									"value": "2020-04-15",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getHistoricalWeatherDailybyCity/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getHistoricalWeatherDailybyCity",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Get Historical Energy Weather",
+			"item": [
+				{
+					"name": "get Historical Energy Weather by Position",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "latitude",
+									"value": "35.7721",
+									"type": "text"
+								},
+								{
+									"key": "longitude",
+									"value": "-78.63861",
+									"type": "text"
+								},
+								{
+									"key": "start",
+									"value": "2020-04-14",
+									"type": "text"
+								},
+								{
+									"key": "end",
+									"value": "2020-04-15",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getHistoricalEnergyWeatherbyPosition/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getHistoricalEnergyWeatherbyPosition",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get Historical Energy Weather by City",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "kota",
+									"value": "Raleigh",
+									"type": "text"
+								},
+								{
+									"key": "negara",
+									"value": "US",
+									"type": "text"
+								},
+								{
+									"key": "start",
+									"value": "2020-04-14",
+									"type": "text"
+								},
+								{
+									"key": "end",
+									"value": "2020-04-15",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/getHistoricalEnergyWeatherbyCity/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"getHistoricalEnergyWeatherbyCity",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
