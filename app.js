@@ -6,6 +6,7 @@ var bodyParser = require('body-parser')
 var request = require('request')
 app.use(express.json());
 app.use(bodyParser.json());
+require('dotenv').config();
 
 const pool = mysql.createPool({
     host:"localhost",
@@ -19,6 +20,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // apikey weather.io
 //var key = "e195d378aaf344e9954cfbd417f79d77"
 var key = "1e912c6a9f5c478b971957f039a7488a"
+
+//url link hero
+// proyeksoa2020-217116658.herokuapp.com
+app.get("/tugas",function(req,ress){
+    res.send(process.env.kata)
+})
 
 app.post('/api/registerUser', (req, res) => {
     var no=req.body.id_user;
