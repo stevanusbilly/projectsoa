@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //var key = "e195d378aaf344e9954cfbd417f79d77"
 var key = "1e912c6a9f5c478b971957f039a7488a"
 
-app.post('/registerUser', (req, res) => {
+app.post('/api/registerUser', (req, res) => {
     var no=req.body.id_user;
     var nama=req.body.username;
     var pass=req.body.password;
@@ -273,8 +273,8 @@ app.get("/api/getHistoricalWeatherDailybyPosition/",function(req,ress){
             var temp = {
                 "timezone":rest.timezone,
                 "city":rest.city_name,
-                "sources":rest.sources,
-                "time":rest.datetime
+                "time":rest.datetime,
+                "data":rest.data,
             }
              ress.send(temp);
         } 
@@ -300,8 +300,8 @@ app.get("/api/getHistoricalWeatherDailybyCity/",function(req,ress){
             var temp = {
                 "timezone":rest.timezone,
                 "city":rest.city_name,
-                "sources":rest.sources,
-                "time":rest.datetime
+                "time":rest.datetime,
+                "data":rest.data,
             }
             ress.send(temp);
         } 
