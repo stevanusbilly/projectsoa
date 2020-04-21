@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3588abfb-fd87-4af5-9e82-6be59082edb8",
+		"_postman_id": "186ac823-af8d-4b66-9268-f4cc637143f4",
 		"name": "proyek",
 		"description": "proyek SOA dengan tema cuaca menggunakan API third party yaitu https://www.weatherbit.io/api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -37,7 +37,10 @@
 									"value": "",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/registerUser",
@@ -69,7 +72,10 @@
 									"value": "haha",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/login",
@@ -269,7 +275,10 @@
 									"value": "111.7844",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getAirQualityByPosition",
@@ -317,7 +326,10 @@
 									"value": "indonesia",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getAirQualityByCity",
@@ -365,7 +377,10 @@
 									"value": "-78.63861",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getHistoricalAirQualitybyPosition/",
@@ -402,7 +417,10 @@
 									"value": "US",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getHistoricalAirQualitybyCity/",
@@ -441,7 +459,10 @@
 									"value": "Raleigh",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/get16dayforecast",
@@ -477,7 +498,10 @@
 									"value": "-78.63861",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getForecastbyPosition",
@@ -508,7 +532,10 @@
 									"value": "27601",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getForecastbyPostalCode",
@@ -539,7 +566,10 @@
 									"value": "KRDU",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getForecastbyStation",
@@ -577,7 +607,10 @@
 									"value": "8953360",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getForecastbyCityId",
@@ -620,7 +653,10 @@
 									"type": "text",
 									"disabled": true
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getlatlod",
@@ -672,7 +708,10 @@
 									"value": "2020-04-15",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getHistoricalWeatherDailybyPosition/",
@@ -719,7 +758,10 @@
 									"value": "2020-04-15",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getHistoricalWeatherDailybyCity/",
@@ -772,7 +814,10 @@
 									"value": "2020-04-15",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getHistoricalEnergyWeatherbyPosition/",
@@ -819,7 +864,10 @@
 									"value": "2020-04-15",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{url}}/api/getHistoricalEnergyWeatherbyCity/",
