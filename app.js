@@ -24,7 +24,7 @@ var key = "1e912c6a9f5c478b971957f039a7488a"
 //url link hero
 // proyeksoa2020-217116658.herokuapp.com
 app.get("/tugas",function(req,ress){
-    res.send(process.env.kata)
+    ress.send("masuk")
 })
 
 app.post('/api/registerUser', (req, res) => {
