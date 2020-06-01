@@ -41,14 +41,6 @@ const pool = mysql.createPool({
 //var key = "e195d378aaf344e9954cfbd417f79d77"
 var key = "1e912c6a9f5c478b971957f039a7488a"
 
-const midtransClient = require('midtrans-client');
-// Create Snap API instance
-let snap = new midtransClient.Snap({
-        isProduction : false,
-        serverKey : 'Mid-server-gTkDygDkvN-n64MqfCKHUYpF',
-        clientKey : 'Mid-client-iboHjIcpvFCMERQg'
-    });
-
 const SERVERKEY_MIDTRANS = 'SB-Mid-server-T4agrfWABk-N9H2MlpDtG-uO'
 
     
