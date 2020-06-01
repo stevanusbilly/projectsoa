@@ -33,7 +33,12 @@ const pool = mysql.createPool({
     database:"sql12344701",
 })
 
-
+// const pool = mysql.createPool({
+//     user:"root",
+//     password:"",
+//     host:"localhost",
+//     database:"proyeksoa",
+// })
 // apikey weather.io
 //var key = "e195d378aaf344e9954cfbd417f79d77"
 var key = "1e912c6a9f5c478b971957f039a7488a"
@@ -56,7 +61,7 @@ app.post('/user/registerUser', upload.single('filename'),async (req, res) => {
                     "msg":"user already exist"
                 });
             }else{
-                conn.query("insert into user values(?,?,?,?,?)",[email,password,nama,tipe,filename], (error, rows, fields) => {
+                conn.query("insert into user values(?,?,?,?,?,?)",[email,password,nama,tipe,filename,""], (error, rows, fields) => {
                     res.status(200).send({
                         "status":"200",
                         "msg":"register success"
@@ -761,21 +766,16 @@ function bayar(user,res,email){
             res.send(body)
         }else{
             if(body.status_code == 201){
-                text = body.toString();
-                rest = JSON.parse(text)
                 res.status(201).send({
                     "status":200,
                     "msg":"subscribe berhasil",
-                    "transaction_detail":"rest",
-                    "id":"rest.transaction_id"
+                    "transaction_detail":body
                 })
-                // pool.getConnection(function(err,conn){
-                //     conn.query(`select * from user where email='${email}'`,function(error,result){
-                //         conn.query("update user set transaction_id=?",[body.transaction_detail.transaction_id], (error, rows, fields) => {
-                //             console.log(result)
-                //         });
-                //     })
-                // });
+                pool.getConnection(function(err,conn){
+                    conn.query("update user set transaction_id=? where email=?",[body.transaction_id,email], (error, rows, fields) => {
+                        
+                    });
+                });
             }else{
                 res.send(body)
             }
