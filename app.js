@@ -1,8 +1,10 @@
+'use strict';
 const express = require("express");
 const app = express();
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 var bodyParser = require('body-parser')
+const http = require('http');
 var request = require('request')
 multer = require('multer');
 path = require('path')
@@ -24,10 +26,11 @@ let storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 const pool = mysql.createPool({
-    host:"localhost",
-    database:"proyekSOA",
-    user:"root",
-    password:""
+    host:"sql12.freemysqlhosting.net",
+    user:"sql12344701",
+    password:"EAMeb36449",
+    port:"3306",
+    database:"sql12344701",
 })
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -810,6 +813,7 @@ function bayar(user,res){
     });
 }
 
-app.listen(3000,function(){
-    console.log("Listening to port 3000");
-})
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log('Express server listening on port', port)
+});
