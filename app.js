@@ -135,9 +135,6 @@ app.post('/user/subscribe', (req, res) => {
             conn.query(`select * from user where email='${email}'`,function(error,result){
                 if(result.length > 0){
                     if(result[0].password == pass){
-                        conn.query("update user set tipe=?",["1"], (error, rows, fields) => {
-                            console.log(result)
-                        });
                         bayar(result,res,email);
                     }else{
                         return res.status(403).send({
@@ -764,10 +761,13 @@ function bayar(user,res,email){
             res.send(body)
         }else{
             if(body.status_code == 201){
+                text = body.toString();
+                rest = JSON.parse(text)
                 res.status(201).send({
                     "status":200,
                     "msg":"subscribe berhasil",
-                    "transaction_detail":body
+                    "transaction_detail":body,
+                    "id":rest.transaction_detail.transaction_id
                 })
                 // pool.getConnection(function(err,conn){
                 //     conn.query(`select * from user where email='${email}'`,function(error,result){
