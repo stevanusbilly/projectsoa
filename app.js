@@ -766,7 +766,7 @@ function bayar(user,res,email){
                 res.status(201).send({
                     "status":200,
                     "msg":"subscribe berhasil",
-                    "transaction_detail":body,
+                    "transaction_detail":rest,
                     "id":rest.transaction_detail.transaction_id
                 })
                 // pool.getConnection(function(err,conn){
