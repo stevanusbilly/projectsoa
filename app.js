@@ -11,6 +11,10 @@ app.use(express.json());
 app.use(bodyParser.json());
 require('dotenv').config();
 
+const port = process.env.PORT || 3000
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+
 //link pembayaran midtrans
 //https://simulator.sandbox.midtrans.com/bca/va/index
 
@@ -32,7 +36,6 @@ const pool = mysql.createPool({
     database:"sql12344701",
 })
 
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // apikey weather.io
 //var key = "e195d378aaf344e9954cfbd417f79d77"
@@ -812,7 +815,4 @@ function bayar(user,res){
     });
 }
 
-const port = process.env.PORT || 3306;
-app.listen(port, () => {
-  console.log('Express server listening on port', port)
-});
+app.listen(port, () => console.log(`Example app listening on port ${port}!`))
