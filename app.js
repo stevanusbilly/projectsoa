@@ -767,8 +767,7 @@ function bayar(user,res,email){
                 res.status(201).send({
                     "status":200,
                     "msg":"subscribe berhasil",
-                    "transaction_detail":body,
-                    "id":"body.transaction_detail.transaction_id"
+                    "transaction_detail":body
                 })
                 // pool.getConnection(function(err,conn){
                 //     conn.query(`select * from user where email='${email}'`,function(error,result){
