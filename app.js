@@ -194,67 +194,42 @@ app.delete('/user/deleteUser', (req, res) => {
     });
 });
 
-app.post('/user/refreshStatus', (req, res) => {
-    order_id = req.body.order_id
-    var authOptions = {
-        url: `https://api.sandbox.midtrans.com/v2/${order_id}/status`,
-        headers: {
-            'Accept' : 'application/json',
-            'Content-Type' : 'application/json',
-            'Authorization' : 'Basic ' + new Buffer(SERVERKEY_MIDTRANS).toString('base64')
-        },
-        body : {
-            'payment_type' : 'bank_transfer',
-            'transaction_details' : {
-                'gross_amount' : 150000,
-                'order_id' : order_id
-            },
-            'customer_details': {
-                'first_name' : user[0].nama,
-                'email' : user[0].email
-            },
-            'item_details' : {
-                'price' : 150000,
-                'quantity' : 1,
-                'name' : 'Subscription API'
-            },
-            'bank_transfer' : {
-                'bank' : 'bca',
-                'va_number' : '12345678901',
-                'free_text' : {
-                    'inquiry' : [
-                        {
-                            'id' : 'Your Custom Text in ID language',
-                            'en' : 'Your Custom Text in EN language'
-                        }
-                        ],
-                        'payment' : [
-                        {
-                            'id' : 'Your Custom Text in ID language',
-                            'en' : 'Your Custom Text in EN language'
-                        }
-                    ]
-                }
+app.post("/cekBayar",async(req,res)=>{
+    let receivedJson = req.body;
+    if(!receivedJson){
+        console.log("tidak terjadi apa apa");
+        res.status(200).send("tidak terjadi apa apa");
+    }else{
+        core.transaction.notification(receivedJson)
+        .then(async(transactionStatusObject)=>{
+        let transaction_id = transactionStatusObject.transaction_id;
+        let transactionStatus = transactionStatusObject.transaction_status;
+        let fraudStatus = transactionStatusObject.fraud_status;
+
+        if (transactionStatus == 'capture'){
+            if (fraudStatus == 'challenge'){
+                // TODO set transaction status on your databaase to 'challenge'
+            } else if (fraudStatus == 'accept'){
+                // TODO set transaction status on your databaase to 'success'
+                const conn = await getConnection();
+                const upgradeUser = await executeQuery(conn,`update user set type=1 where transaction_id='${transaction_id}'`);
+                conn.release();
+                console.log("upgrade user");
+                res.status(200).send("upgrade user berhasil");
             }
-        },
-        json: true,
-    }
-    request.get(authOptions, function(error, response, body) {
-        if (error) {
-            res.send(body)
+        } else if (transactionStatus == 'settlement'){
+            // TODO set transaction status on your databaase to 'success'
+            const conn = await getConnection();
+            const upgradeUser = await executeQuery(conn,`update user set type=1 where transaction_id='${transaction_id}'`);
+            conn.release();
+            console.log("upgrade user");
+            res.status(200).send("upgrade user berhasil");
         }else{
-            if(body.status_code == 201){
-                res.status(201).send({
-                    "status":200,
-                    "msg":"subscribe berhasil",
-                    "transaction detail":body
-                })
-            }else{
-                res.send(body)
-            }
-            
+            console.log("tidak terjadi apa apa");
+            res.status(200).send("tidak terjadi apa apa");
         }
-    });
+        });
+    }
 });
 
 app.post('/lokasi/insertLokasi', function(req,res){
