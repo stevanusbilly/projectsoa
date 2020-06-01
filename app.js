@@ -195,9 +195,9 @@ app.delete('/user/deleteUser', (req, res) => {
 });
 
 app.post('/user/refreshStatus', (req, res) => {
-    email = req.body.order_id
+    order_id = req.body.order_id
     var authOptions = {
-        url: 'https://api.sandbox.midtrans.com/v2/status',
+        url: `https://api.sandbox.midtrans.com/v2/${order_id}/status`,
         headers: {
             'Accept' : 'application/json',
             'Content-Type' : 'application/json',
