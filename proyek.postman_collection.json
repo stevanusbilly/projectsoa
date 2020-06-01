@@ -1,103 +1,79 @@
 {
 	"info": {
-		"_postman_id": "186ac823-af8d-4b66-9268-f4cc637143f4",
+		"_postman_id": "3588abfb-fd87-4af5-9e82-6be59082edb8",
 		"name": "proyek",
 		"description": "proyek SOA dengan tema cuaca menggunakan API third party yaitu https://www.weatherbit.io/api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "post",
-			"item": [
-				{
-					"name": "Register",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "id_user",
-									"value": "",
-									"type": "text"
-								},
-								{
-									"key": "username",
-									"value": "",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "",
-									"type": "text"
-								},
-								{
-									"key": "email",
-									"value": "",
-									"type": "text"
-								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/registerUser",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"registerUser"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "email",
-									"value": "haha@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "haha",
-									"type": "text"
-								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/api/login",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"login"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
 			"name": "Get Current Weahter",
 			"item": [
 				{
 					"name": "Get Current Weather",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "5cfdc7c8-cbd7-4979-98ac-838e1a833756",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"temp\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "bbe9776d-edd3-41fb-bf9f-7db4e59e9efe",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"Get Current Weather\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"Get Latitude and Longitude\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -123,12 +99,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/currentWeather",
+							"raw": "{{hero}}/weather/currentWeather",
 							"host": [
-								"{{url}}"
+								"{{hero}}"
 							],
 							"path": [
-								"api",
+								"weather",
 								"currentWeather"
 							]
 						},
@@ -145,12 +121,81 @@
 			"item": [
 				{
 					"name": "Get Alert by City and Country",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "901ae139-1e8a-42e8-b664-727bb9ffdae5",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"temp\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "d3a70f90-4e79-414d-a4f0-abc92bcedea3",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"Get Alert by City and Country\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"Get Alert by Position\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0ZXZhbnVzQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicGFzcyIsInRpcGUiOiIxIiwiaWF0IjoxNTkwNDg2NTk5fQ.QW40BJZxW2gC6Qb6xj3GAGBlvlA-tkK4BUszULC5Rg0",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
@@ -170,12 +215,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/getAlertByCity",
+							"raw": "{{hero}}/alert/getAlertByCity",
 							"host": [
-								"{{url}}"
+								"{{hero}}"
 							],
 							"path": [
-								"api",
+								"alert",
 								"getAlertByCity"
 							],
 							"query": [
@@ -191,18 +236,87 @@
 								}
 							]
 						},
-						"description": "Mendapatkan Peringatan Cuaca pada kota dan negara. kota parameter default, negara parameter optional."
+						"description": "kota parameter default, negara parameter optional."
 					},
 					"response": []
 				},
 				{
 					"name": "Get Alert by Position",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c650eb25-b734-4338-b7c9-1637f2fec419",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"temp\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "6983ecef-c87c-47b8-9618-7946ea6addab",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"Get Alert by Position\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"Get Air Quality by Position\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0ZXZhbnVzQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicGFzcyIsInRpcGUiOiIxIiwiaWF0IjoxNTkwNDkyMjU0fQ.VBdhjJl7RCBhAjYi8uOuV8nUcdUJ35YRC6GYb_pih1M",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
@@ -222,12 +336,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/getAlertByPosition",
+							"raw": "{{hero}}/alert/getAlertByPosition",
 							"host": [
-								"{{url}}"
+								"{{hero}}"
 							],
 							"path": [
-								"api",
+								"alert",
 								"getAlertByPosition"
 							],
 							"query": [
@@ -243,12 +357,12 @@
 								}
 							]
 						},
-						"description": "Mendapatkan peringatan cuaca pada suatu tempat berdasarkan posisi.\nlatitude dan longitude merupakan parameter default"
+						"description": "latitude dan longitude merupakan parameter default"
 					},
 					"response": []
 				}
 			],
-			"description": "Mendapatkan Cuaca pada suatu kota saat ini",
+			"description": "Mendapatkan Peringatan Cuaca",
 			"protocolProfileBehavior": {}
 		},
 		{
@@ -256,12 +370,81 @@
 			"item": [
 				{
 					"name": "Get Air Quality by Position",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "7571da17-8958-4a40-81ab-b932c1c820e5",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"temp\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "8ec3c7bd-81ef-4a26-9154-d1518c135bca",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"Get Air Quality by Position\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"Get Air Quality by City and Country\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0ZXZhbnVzQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicGFzcyIsInRpcGUiOiIxIiwiaWF0IjoxNTkwNDg2NTk5fQ.QW40BJZxW2gC6Qb6xj3GAGBlvlA-tkK4BUszULC5Rg0",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
@@ -281,12 +464,12 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/getAirQualityByPosition",
+							"raw": "{{hero}}/quality/getAirQualityByPosition",
 							"host": [
-								"{{url}}"
+								"{{hero}}"
 							],
 							"path": [
-								"api",
+								"quality",
 								"getAirQualityByPosition"
 							],
 							"query": [
@@ -301,12 +484,76 @@
 									"disabled": true
 								}
 							]
-						}
+						},
+						"description": "latitude dan longitude parameter default."
 					},
 					"response": []
 				},
 				{
 					"name": "Get Air Quality by City and Country",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "53401772-078a-4cf3-9898-040452688b2d",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"temp\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "ce45c5cb-c464-400c-93e3-0972ad99bb80",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"Get Air Quality by City and Country\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"get Historical Weather Daily by Position\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -332,107 +579,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{url}}/api/getAirQualityByCity",
+							"raw": "{{hero}}/quality/getAirQualityByCity",
 							"host": [
-								"{{url}}"
+								"{{hero}}"
 							],
 							"path": [
-								"api",
+								"quality",
 								"getAirQualityByCity"
-							],
-							"query": [
-								{
-									"key": "latitude",
-									"value": "141",
-									"disabled": true
-								},
-								{
-									"key": "longitude",
-									"value": "100",
-									"disabled": true
-								}
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Historical Air Quality by Position",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "latitude",
-									"value": "35.7721",
-									"type": "text"
-								},
-								{
-									"key": "longitude",
-									"value": "-78.63861",
-									"type": "text"
-								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
 						},
-						"url": {
-							"raw": "{{url}}/api/getHistoricalAirQualitybyPosition/",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"getHistoricalAirQualitybyPosition",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Historical Air Quality by City",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "kota",
-									"value": "Raleigh",
-									"type": "text"
-								},
-								{
-									"key": "negara",
-									"value": "US",
-									"type": "text"
-								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/api/getHistoricalAirQualitybyCity/",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"getHistoricalAirQualitybyCity",
-								""
-							]
-						}
+						"description": "Kota parameter default, negara parameter optional."
 					},
 					"response": []
 				}
@@ -441,198 +597,73 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Get Forecast 16 Day",
-			"item": [
-				{
-					"name": "Get Forecast by City",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "kota",
-									"value": "Raleigh",
-									"type": "text"
-								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/api/get16dayforecast",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"get16dayforecast"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Forecast by Position",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "lat",
-									"value": "35.7721",
-									"type": "text"
-								},
-								{
-									"key": "lon",
-									"value": "-78.63861",
-									"type": "text"
-								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/api/getForecastbyPosition",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"getForecastbyPosition"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Forecast by Postal Code",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "postalcode",
-									"value": "27601",
-									"type": "text"
-								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/api/getForecastbyPostalCode",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"getForecastbyPostalCode"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Forecast by Station",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "station",
-									"value": "KRDU",
-									"type": "text"
-								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/api/getForecastbyStation",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"getForecastbyStation"
-							],
-							"query": [
-								{
-									"key": "station",
-									"value": "KRDU",
-									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get Forecast by City ID",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "city_id",
-									"value": "8953360",
-									"type": "text"
-								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
-						},
-						"url": {
-							"raw": "{{url}}/api/getForecastbyCityId",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"getForecastbyCityId"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"protocolProfileBehavior": {}
-		},
-		{
 			"name": "Get Position",
 			"item": [
 				{
 					"name": "Get Latitude and Longitude",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "a09a5cb7-0aab-45ac-aa23-40852dc2aa4c",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"temp\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "5cabd7ac-b411-4093-b034-2b84e758f6a7",
+								"exec": [
+									"data = pm.environment.get(\"post_weather\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"Get Latitude and Longitude\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"Get Alert by City and Country\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -653,18 +684,15 @@
 									"type": "text",
 									"disabled": true
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
-							"raw": "{{url}}/api/getlatlod",
+							"raw": "{{hero}}/position/getlatlod",
 							"host": [
-								"{{url}}"
+								"{{hero}}"
 							],
 							"path": [
-								"api",
+								"position",
 								"getlatlod"
 							]
 						}
@@ -675,103 +703,580 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Get Historical Weather Daily",
+			"name": "User",
 			"item": [
 				{
-					"name": "get Historical Weather Daily by Position",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "latitude",
-									"value": "35.7721",
-									"type": "text"
-								},
-								{
-									"key": "longitude",
-									"value": "-78.63861",
-									"type": "text"
-								},
-								{
-									"key": "start",
-									"value": "2020-04-14",
-									"type": "text"
-								},
-								{
-									"key": "end",
-									"value": "2020-04-15",
-									"type": "text"
-								}
-							],
-							"options": {
-								"urlencoded": {}
+					"name": "register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c9730d88-8f1b-47f4-8161-d3497b56d406",
+								"exec": [
+									"data = pm.environment.get(\"post_user\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_email\": \"bill@gmail.com\",\r",
+									"            \"post_nama\": \"bill\",\r",
+									"            \"post_tipe\": \"0\",\r",
+									"            \"post_password\": \"pass\",\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"register success\"\r",
+									"            }\r",
+									"        },\r",
+									"         {\r",
+									"            \"post_email\": \"bill\",\r",
+									"            \"post_nama\": \"bill\",\r",
+									"            \"post_tipe\": \"0\",\r",
+									"            \"post_password\": \"pass\",\r",
+									"            \"post_status_code\" : 403,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"403\",\r",
+									"                \"msg\":\"user already exist\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_email\", currentData[\"post_email\"]);\r",
+									"pm.environment.set(\"post_nama\", currentData[\"post_nama\"]);\r",
+									"pm.environment.set(\"post_tipe\", currentData[\"post_tipe\"]);\r",
+									"pm.environment.set(\"post_password\", currentData[\"post_password\"]);\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_user\", data);"
+								],
+								"type": "text/javascript"
 							}
 						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7d0e64bd-9429-4307-adc5-2ba70059bdd1",
+								"exec": [
+									"data = pm.environment.get(\"post_user\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"register\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"update\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_email\");\r",
+									"    pm.environment.unset(\"post_nama\");\r",
+									"    pm.environment.unset(\"post_tipe\");\r",
+									"    pm.environment.unset(\"post_password\");\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "filename",
+									"type": "file",
+									"src": "/C:/Users/ASUS/Pictures/Camera/IMG20180701054950.jpg"
+								},
+								{
+									"key": "email",
+									"value": "stevanus@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "nama",
+									"value": "bill",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "{{url}}/api/getHistoricalWeatherDailybyPosition/",
+							"raw": "{{hero}}/user/registerUser",
 							"host": [
-								"{{url}}"
+								"{{hero}}"
 							],
 							"path": [
-								"api",
-								"getHistoricalWeatherDailybyPosition",
-								""
+								"user",
+								"registerUser"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "get Historical Weather Daily by City",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "login",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f6bad6f1-af15-4ec1-9d8c-814adf77f61c",
+								"exec": [
+									"data = pm.environment.get(\"post_user\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_email\": \"bill@gmail.com\",\r",
+									"            \"post_password\": \"pass\",\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":200,\r",
+									"                \"msg\":\"login success\",\r",
+									"                \"token\":\"token\"\r",
+									"            }\r",
+									"        },\r",
+									"        {\r",
+									"            \"post_email\": \"bill@gmail.com\",\r",
+									"            \"post_password\": \"pass\",\r",
+									"            \"post_status_code\" : 403,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"403\",\r",
+									"                \"msg\":\"invalid email or password\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_email\", currentData[\"post_email\"]);\r",
+									"pm.environment.set(\"post_password\", currentData[\"post_password\"]);\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_user\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "aaaf6c1d-db46-4d97-bfda-b3a42684a801",
+								"exec": [
+									"data = pm.environment.get(\"post_user\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"login\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"insert lokasi\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_email\");\r",
+									"    pm.environment.unset(\"post_password\");\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "kota",
-									"value": "Raleigh",
+									"key": "email",
+									"value": "stevanus@gmail.com",
 									"type": "text"
 								},
 								{
-									"key": "negara",
-									"value": "US",
-									"type": "text"
-								},
-								{
-									"key": "start",
-									"value": "2020-04-14",
-									"type": "text"
-								},
-								{
-									"key": "end",
-									"value": "2020-04-15",
+									"key": "password",
+									"value": "pass",
 									"type": "text"
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
-							"raw": "{{url}}/api/getHistoricalWeatherDailybyCity/",
+							"raw": "{{hero}}/user/login",
 							"host": [
-								"{{url}}"
+								"{{hero}}"
 							],
 							"path": [
-								"api",
-								"getHistoricalWeatherDailybyCity",
-								""
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "00809fe0-37b6-40e1-a2aa-5c15e7d687dc",
+								"exec": [
+									"data = pm.environment.get(\"post_user\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"update success\"\r",
+									"            }\r",
+									"        },\r",
+									"         {\r",
+									"            \"post_status_code\" : 403,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"403\",\r",
+									"                \"msg\":\"invalid username or password\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "76996270-1538-470d-98c3-25519c65cbd5",
+								"exec": [
+									"data = pm.environment.get(\"post_user\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"update\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"subscribe\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "bill2@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "text"
+								},
+								{
+									"key": "nama_baru",
+									"value": "billy2",
+									"type": "text"
+								},
+								{
+									"key": "password_baru",
+									"value": "passbaru",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{hero}}/user/updateUser",
+							"host": [
+								"{{hero}}"
+							],
+							"path": [
+								"user",
+								"updateUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d1e2b452-65bf-4433-8d99-bef0c4e6af72",
+								"exec": [
+									"data = pm.environment.get(\"post_user\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_email\": \"stevanus@gmail.com\",\r",
+									"            \"post_password\": \"pass\",\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"delete success\"\r",
+									"            }\r",
+									"        },\r",
+									"         {\r",
+									"            \"post_email\": \"bill\",\r",
+									"            \"post_password\": \"pass\",\r",
+									"            \"post_status_code\" : 403,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"403\",\r",
+									"                \"msg\":\"invalid username or password\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_email\", currentData[\"post_email\"]);\r",
+									"pm.environment.set(\"post_password\", currentData[\"post_password\"]);\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_user\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "b25806bb-6323-4480-bc2f-3024e8704afc",
+								"exec": [
+									"data = pm.environment.get(\"post_user\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"delete\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"register\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_email\");\r",
+									"    pm.environment.unset(\"post_password\");\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "stevanus@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{hero}}/user/deleteUser",
+							"host": [
+								"{{hero}}"
+							],
+							"path": [
+								"user",
+								"deleteUser"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "subscribe",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "fb2c964b-3de3-4a8e-95a3-e31c2123ab47",
+								"exec": [
+									"data = pm.environment.get(\"post_user\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_email\": \"bill@gmail.com\",\r",
+									"            \"post_password\": \"pass\",\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":200,\r",
+									"                \"msg\":\"login success\",\r",
+									"                \"token\":\"token\"\r",
+									"            }\r",
+									"        },\r",
+									"        {\r",
+									"            \"post_email\": \"bill@gmail.com\",\r",
+									"            \"post_password\": \"pass\",\r",
+									"            \"post_status_code\" : 403,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"403\",\r",
+									"                \"msg\":\"invalid email or password\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_email\", currentData[\"post_email\"]);\r",
+									"pm.environment.set(\"post_password\", currentData[\"post_password\"]);\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_user\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "96b6f1af-ba94-4d1c-b402-3ff181a401fc",
+								"exec": [
+									"data = pm.environment.get(\"post_user\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"subscribe\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"login\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_email\");\r",
+									"    pm.environment.unset(\"post_password\");\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "stevanus2@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pass",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{hero}}/user/subscribe",
+							"host": [
+								"{{hero}}"
+							],
+							"path": [
+								"user",
+								"subscribe"
 							]
 						}
 					},
@@ -781,60 +1286,188 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Get Historical Energy Weather",
+			"name": "lokasi",
 			"item": [
 				{
-					"name": "get Historical Energy Weather by Position",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
+					"name": "insert lokasi",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "4eed12b6-06f7-430c-b988-27d48262d93a",
+								"exec": [
+									"data = pm.environment.get(\"post_lokasi\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":200,\r",
+									"                \"msg\" : \"insert success\"\r",
+									"            }\r",
+									"        },\r",
+									"         {\r",
+									"            \"post_status_code\" : 403,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"403\",\r",
+									"                \"msg\":\"location already inserted\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "932953b6-03e4-4ad8-8393-0c8448e3b2f2",
+								"exec": [
+									"data = pm.environment.get(\"post_lokasi\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"insert lokasi\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"search lokasi\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "latitude",
-									"value": "35.7721",
+									"key": "nama_lokasi",
+									"value": "BNS",
 									"type": "text"
 								},
 								{
-									"key": "longitude",
-									"value": "-78.63861",
+									"key": "kota_lokasi",
+									"value": "blitar ",
 									"type": "text"
 								},
 								{
-									"key": "start",
-									"value": "2020-04-14",
-									"type": "text"
-								},
-								{
-									"key": "end",
-									"value": "2020-04-15",
+									"key": "negara_lokasi",
+									"value": "indonesia",
 									"type": "text"
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
-							"raw": "{{url}}/api/getHistoricalEnergyWeatherbyPosition/",
+							"raw": "{{hero}}/lokasi/insertLokasi",
 							"host": [
-								"{{url}}"
+								"{{hero}}"
 							],
 							"path": [
-								"api",
-								"getHistoricalEnergyWeatherbyPosition",
-								""
+								"lokasi",
+								"insertLokasi"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "get Historical Energy Weather by City",
+					"name": "search lokasi",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "feb9ee77-efb5-4b5e-8084-c53c30769295",
+								"exec": [
+									"data = pm.environment.get(\"post_lokasi\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                    \"msg\":\"result\"\r",
+									"            }\r",
+									"        },\r",
+									"         {\r",
+									"            \"post_status_code\" : 404,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"404\",\r",
+									"                \"msg\":\"location not found\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "737b68a2-ad01-4528-9101-12425817589e",
+								"exec": [
+									"data = pm.environment.get(\"post_lokasi\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"search lokasi\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"Get Current Weather\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -845,39 +1478,285 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
+									"key": "nama",
+									"value": "",
+									"type": "text"
+								},
+								{
 									"key": "kota",
-									"value": "Raleigh",
+									"value": "blitar",
 									"type": "text"
 								},
 								{
 									"key": "negara",
-									"value": "US",
-									"type": "text"
-								},
-								{
-									"key": "start",
-									"value": "2020-04-14",
-									"type": "text"
-								},
-								{
-									"key": "end",
-									"value": "2020-04-15",
+									"value": "",
 									"type": "text"
 								}
-							],
-							"options": {
-								"urlencoded": {}
-							}
+							]
 						},
 						"url": {
-							"raw": "{{url}}/api/getHistoricalEnergyWeatherbyCity/",
+							"raw": "{{hero}}/lokasi/searchlokasi",
 							"host": [
-								"{{url}}"
+								"{{hero}}"
 							],
 							"path": [
-								"api",
-								"getHistoricalEnergyWeatherbyCity",
-								""
+								"lokasi",
+								"searchlokasi"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "list",
+			"item": [
+				{
+					"name": "add list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "59f2b5b2-a4d0-4c13-9ec1-96dcab3bf97a",
+								"exec": [
+									"data = pm.environment.get(\"post_list\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"insert success\"\r",
+									"            }\r",
+									"        },\r",
+									"         {\r",
+									"            \"post_status_code\" : 404,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"404\",\r",
+									"                \"msg\":\"location not found\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "a836bfc9-e141-49d6-8516-da08b42b3408",
+								"exec": [
+									"data = pm.environment.get(\"post_list\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"add list\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"remove list\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0ZXZhbnVzQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicGFzcyIsInRpcGUiOiIxIiwiaWF0IjoxNTkwNjQyMjc0fQ.QZaoTov3WnFDDyli81-Ouz_GNeQV6eg_E0_OW_8D_is",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id_lokasi",
+									"value": "L0000",
+									"type": "text"
+								},
+								{
+									"key": "tgl",
+									"value": "10/10/2020",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{hero}}/list/addtolist",
+							"host": [
+								"{{hero}}"
+							],
+							"path": [
+								"list",
+								"addtolist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove list",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "26f32bc8-bd5f-4923-8f10-c0a76b32f5af",
+								"exec": [
+									"data = pm.environment.get(\"post_list\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"post_status_code\" : 200,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"200\",\r",
+									"                \"msg\":\"remove from list success\"\r",
+									"            }\r",
+									"        },\r",
+									"         {\r",
+									"            \"post_status_code\" : 404,\r",
+									"            \"post_user_body\": {\r",
+									"                \"status\":\"404\",\r",
+									"                \"msg\":\"list not found\"\r",
+									"            }\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "3e165b39-48ea-453f-8cb2-a91f46f22fcb",
+								"exec": [
+									"data = pm.environment.get(\"post_list\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"add list\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"remove list\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"type": "text",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0ZXZhbnVzQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicGFzcyIsInRpcGUiOiIxIiwiaWF0IjoxNTkwNjQyMjc0fQ.QZaoTov3WnFDDyli81-Ouz_GNeQV6eg_E0_OW_8D_is"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id_lokasi",
+									"value": "L0000",
+									"type": "text"
+								},
+								{
+									"key": "tgl",
+									"value": "10/10/2020",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{hero}}/list/removelist",
+							"host": [
+								"{{hero}}"
+							],
+							"path": [
+								"list",
+								"removelist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{hero}}/list/viewMyList",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0ZXZhbnVzQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicGFzcyIsInRpcGUiOiIxIiwiaWF0IjoxNTkwOTk1MTY2fQ.wt1IZ18pyeatwFKPmDKhqBuo8TR8Dr5lJeXxnmj5zhg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "{{hero}}/list/viewMyList",
+							"host": [
+								"{{hero}}"
+							],
+							"path": [
+								"list",
+								"viewMyList"
 							]
 						}
 					},
