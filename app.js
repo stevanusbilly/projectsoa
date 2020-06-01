@@ -161,8 +161,10 @@ app.post('/user/subscribe', (req, res) => {
 app.delete('/user/deleteUser', (req, res) => {
     email = req.body.email
     pass = req.body.password
+    id_admin = req.body.id_admin
+    pass_admin = req.body.pass_admin
     pool.getConnection(function(err,conn){
-        if(email != "" && pass!= ""){
+        if(email != "" && pass!= "" && id_admin == "admin" && pass_admin == "admin"){
             conn.query(`select * from user where email='${email}'`,function(error,result){
                 if(result.length > 0){
                     if(result[0].password == pass){
@@ -188,6 +190,69 @@ app.delete('/user/deleteUser', (req, res) => {
             })
         }else{
             res.send("data harus terisi semua")
+        }
+    });
+});
+
+app.post('/user/refreshStatus', (req, res) => {
+    email = req.body.order_id
+    var authOptions = {
+        url: 'https://api.sandbox.midtrans.com/v2/status',
+        headers: {
+            'Accept' : 'application/json',
+            'Content-Type' : 'application/json',
+            'Authorization' : 'Basic ' + new Buffer(SERVERKEY_MIDTRANS).toString('base64')
+        },
+        body : {
+            'payment_type' : 'bank_transfer',
+            'transaction_details' : {
+                'gross_amount' : 150000,
+                'order_id' : order_id
+            },
+            'customer_details': {
+                'first_name' : user[0].nama,
+                'email' : user[0].email
+            },
+            'item_details' : {
+                'price' : 150000,
+                'quantity' : 1,
+                'name' : 'Subscription API'
+            },
+            'bank_transfer' : {
+                'bank' : 'bca',
+                'va_number' : '12345678901',
+                'free_text' : {
+                    'inquiry' : [
+                        {
+                            'id' : 'Your Custom Text in ID language',
+                            'en' : 'Your Custom Text in EN language'
+                        }
+                        ],
+                        'payment' : [
+                        {
+                            'id' : 'Your Custom Text in ID language',
+                            'en' : 'Your Custom Text in EN language'
+                        }
+                    ]
+                }
+            }
+        },
+        json: true,
+    }
+    request.post(authOptions, function(error, response, body) {
+        if (error) {
+            res.send(body)
+        }else{
+            if(body.status_code == 201){
+                res.status(201).send({
+                    "status":200,
+                    "msg":"subscribe berhasil",
+                    "transaction detail":body
+                })
+            }else{
+                res.send(body)
+            }
+            
         }
     });
 });
