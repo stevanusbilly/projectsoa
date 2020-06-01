@@ -49,7 +49,7 @@ app.post('/user/registerUser', upload.single('filename'),async (req, res) => {
     const password = req.body.password;
     api_hit = 50;
     pool.getConnection(function(err,conn){
-        if(email != "" && nama != "" && tipe != "" && password!= ""){
+        if(email != "" && nama != "" && password!= ""){
             conn.query(`select * from user where email='${email}'`,function(error,result){
                 if(result.length > 0){
                     return res.status(403).send({
