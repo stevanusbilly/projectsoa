@@ -15,9 +15,6 @@ const port = process.env.PORT || 3000
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//link pembayaran midtrans
-//https://simulator.sandbox.midtrans.com/bca/va/index
-
 let storage = multer.diskStorage({
     destination: function(req, file, callback) {
         callback(null, './uploads')
