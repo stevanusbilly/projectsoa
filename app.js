@@ -137,8 +137,8 @@ app.post('/user/subscribe', (req, res) => {
                     if(result[0].password == pass){
                         conn.query("update user set tipe=?",["1"], (error, rows, fields) => {
                             console.log(result)
-                            bayar(result,res);
                         });
+                        bayar(result,res,email);
                     }else{
                         return res.status(403).send({
                             "status":"403",
@@ -713,7 +713,7 @@ app.get("/quality/getAirQualityByCity",function(req,ress){
     }
 })
 
-function bayar(user,res){
+function bayar(user,res,email){
     var d = new Date();
     var order_id = "order-" + d.getDate() + d.getMonth() + d.getFullYear()+"-"+ d.getHours() + d.getMinutes() + d.getSeconds();
     var authOptions = {
@@ -767,8 +767,16 @@ function bayar(user,res){
                 res.status(201).send({
                     "status":200,
                     "msg":"subscribe berhasil",
-                    "transaction detail":body
+                    "transaction_detail":body
                 })
+                // pool.getConnection(function(err,conn){
+                //     conn.query(`select * from user where email='${email}'`,function(error,result){
+                //         conn.query("update user set transaction_id=?",[body.transaction_detail.transaction_id], (error, rows, fields) => {
+                //             console.log(result)
+                //         });
+                //     })
+                // });
+                console.log(body.transaction_detail.transaction_id)
             }else{
                 res.send(body)
             }
