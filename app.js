@@ -302,6 +302,53 @@ app.post('/list/addtolist',function(req,res){
     }
 })
 
+app.get('/list/viewMyList',function(req,res){
+    id_lokasi = req.body.id_lokasi
+    tgl = req.body.tgl
+    const token = req.header("x-auth-token");
+    if(!token){
+        res.status(600).send({
+            "status":"600",
+            "msg":"token not found"
+        });
+    }
+    try{
+        user = jwt.verify(token,"proyeksoa");
+    }catch(err){
+        res.status(401).send({
+            "status":"401",
+            "msg":"token invalid"
+        });
+    }
+    if((new Date().getTime()/1000)-user.iat>3600){
+        return res.status(602).send({
+            "status":"602",
+            "msg":"token expired"
+        });
+    }
+    if(user.tipe == 0){ 
+        return res.status(403).send({
+            "status":"403",
+            "msg":"not authorized please upgrade your account"
+        })
+    }else{
+        pool.getConnection(function(err,conn){
+            conn.query(`select * from list where email = '${user.email}'`,function(error,result){
+                if(result.length < 1) res.status(404).send({
+                    "status":"404",
+                    "msg":"No List Added for this user"
+                });
+                else{
+                    res.status(404).send({
+                        "status":"200",
+                        "msg": result
+                    });
+                }
+            })
+        })
+    }
+})
+
 app.delete('/list/removelist', (req, res) => {
     id_lokasi = req.body.id_lokasi
     tgl = req.body.tgl
