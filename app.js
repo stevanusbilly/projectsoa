@@ -239,7 +239,7 @@ app.post('/user/refreshStatus', (req, res) => {
         },
         json: true,
     }
-    request.post(authOptions, function(error, response, body) {
+    request.get(authOptions, function(error, response, body) {
         if (error) {
             res.send(body)
         }else{
