@@ -33,14 +33,6 @@ const pool = mysql.createPool({
     database:"sql12344701",
 })
 
-// const pool = mysql.createPool({
-//     user:"root",
-//     password:"",
-//     host:"localhost",
-//     database:"proyeksoa",
-// })
-// apikey weather.io
-//var key = "e195d378aaf344e9954cfbd417f79d77"
 var key = "1e912c6a9f5c478b971957f039a7488a"
 
 const SERVERKEY_MIDTRANS = 'SB-Mid-server-T4agrfWABk-N9H2MlpDtG-uO'
