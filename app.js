@@ -771,7 +771,7 @@ function bayar(user,res,email){
                 })
                 pool.getConnection(function(err,conn){
                     conn.query("update user set transaction_id=? where email=?",[body.transaction_id,email], (error, rows, fields) => {
-                        
+                        console.log("MASUK")
                     });
                 });
             }else{
