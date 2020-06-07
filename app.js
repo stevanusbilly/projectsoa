@@ -767,9 +767,9 @@ function bayar(user,res,email){
                 res.status(201).send({
                     "status":200,
                     "msg":"subscribe berhasil",
-                    "transaction_detail":body
+                    "transaction_detail":body,
+                    "C":email +"-"+ body.transaction_id
                 })
-                console.log(email +"-"+ body.transaction_id)
                 pool.getConnection(function(err,conn){
                     conn.query("update user set transaction_id=? where email=?",[body.transaction_id,email], (error, rows, fields) => {
                         console.log("MASUK")
