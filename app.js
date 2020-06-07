@@ -205,19 +205,25 @@ app.post("/cekBayar",async(req,res)=>{
                 // TODO set transaction status on your databaase to 'challenge'
             } else if (fraudStatus == 'accept'){
                 // TODO set transaction status on your databaase to 'success'
-                const conn = await getConnection();
-                const upgradeUser = await executeQuery(conn,`update user set type=1 where transaction_id='${transaction_id}'`);
-                conn.release();
-                console.log("upgrade user");
-                res.status(200).send("upgrade user berhasil");
+                pool.getConnection(function(err,conn){
+                    conn.query(`update user set type=1 where transaction_id='${transaction_id}'`,function(error,result){
+                        return res.status(403).send({
+                            "status":"200",
+                            "msg":"Berhasil upgrade"
+                        });
+                    })
+                });
             }
         } else if (transactionStatus == 'settlement'){
             // TODO set transaction status on your databaase to 'success'
-            const conn = await getConnection();
-            const upgradeUser = await executeQuery(conn,`update user set type=1 where transaction_id='${transaction_id}'`);
-            conn.release();
-            console.log("upgrade user");
-            res.status(200).send("upgrade user berhasil");
+            pool.getConnection(function(err,conn){
+                conn.query(`update user set type=1 where transaction_id='${transaction_id}'`,function(error,result){
+                    return res.status(403).send({
+                        "status":"200",
+                        "msg":"Berhasil upgrade"
+                    });
+                })
+            });
         }else{
             console.log("tidak terjadi apa apa");
             res.status(200).send("tidak terjadi apa apa");
