@@ -764,11 +764,12 @@ function bayar(user,res,email){
             res.send(body)
         }else{
             if(body.status_code == 201){
-                res.status(201).send({
+                res.status(200).send({
                     "status":200,
+                    "email":email,
+                    "transaction ID": body.transaction_id,
                     "msg":"subscribe berhasil",
-                    "transaction_detail":body,
-                    "C":email +"-"+ body.transaction_id
+                    "transaction_detail":body
                 })
                 pool.getConnection(function(err,conn){
                     conn.query("update user set transaction_id=? where email=?",[body.transaction_id,email], (error, rows, fields) => {
