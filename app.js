@@ -213,6 +213,7 @@ app.post("/cekBayar",async(req,res)=>{
             } else if (fraudStatus == 'accept'){
                 // TODO set transaction status on your databaase to 'success'
                 pool.getConnection(function(err,conn){
+                    console.log("berhasil bayar accept")
                     conn.query(`update user set type=1 where transaction_id='${transaction_id}'`,function(error,result){
                         return res.status(200).send({
                             "status":"200",
@@ -224,6 +225,7 @@ app.post("/cekBayar",async(req,res)=>{
         } else if (transactionStatus == 'settlement'){
             // TODO set transaction status on your databaase to 'success'
             pool.getConnection(function(err,conn){
+                console.log("berhasil bayar settlement")
                 conn.query(`update user set type=1 where transaction_id='${transaction_id}'`,function(error,result){
                     return res.status(200).send({
                         "status":"200",
