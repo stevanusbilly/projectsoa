@@ -27,8 +27,8 @@ var upload = multer({ storage: storage })
 
 const pool = mysql.createPool({
     host:"sql12.freemysqlhosting.net",
-    user:"sql12344701",
-    password:"EAMeb36449",
+    user:"sql12346960",
+    password:"NARwuwPSKq",
     port:"3306",
     database:"sql12344701",
 })
@@ -207,7 +207,7 @@ app.post("/cekBayar",async(req,res)=>{
                 // TODO set transaction status on your databaase to 'success'
                 pool.getConnection(function(err,conn){
                     conn.query(`update user set type=1 where transaction_id='${transaction_id}'`,function(error,result){
-                        return res.status(403).send({
+                        return res.status(200).send({
                             "status":"200",
                             "msg":"Berhasil upgrade"
                         });
@@ -218,7 +218,7 @@ app.post("/cekBayar",async(req,res)=>{
             // TODO set transaction status on your databaase to 'success'
             pool.getConnection(function(err,conn){
                 conn.query(`update user set type=1 where transaction_id='${transaction_id}'`,function(error,result){
-                    return res.status(403).send({
+                    return res.status(200).send({
                         "status":"200",
                         "msg":"Berhasil upgrade"
                     });
