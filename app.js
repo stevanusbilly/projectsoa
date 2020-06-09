@@ -10,6 +10,7 @@ path = require('path')
 app.use(express.json());
 app.use(bodyParser.json());
 require('dotenv').config();
+const midtransClient = require('midtrans-client');
 
 const port = process.env.PORT || 3000
 app.use(express.urlencoded({ extended: true }));
