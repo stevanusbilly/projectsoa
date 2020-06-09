@@ -30,7 +30,7 @@ const pool = mysql.createPool({
     user:"sql12346960",
     password:"NARwuwPSKq",
     port:"3306",
-    database:"sql12344701",
+    database:"sql12346960",
 })
 
 var key = "1e912c6a9f5c478b971957f039a7488a"
