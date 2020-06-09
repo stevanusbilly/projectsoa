@@ -36,13 +36,13 @@ const pool = mysql.createPool({
 
 let core = new midtransClient.CoreApi({
     isProduction : false,
-    serverKey : 'Mid-server-gTkDygDkvN-n64MqfCKHUYpF',
-    clientKey : 'Mid-client-iboHjIcpvFCMERQg'
+    serverKey : 'SB-Mid-server-T4agrfWABk-N9H2MlpDtG-uO',
+    clientKey : 'SB-Mid-client-vh04WUODqyXI1eor'
   });
 
 var key = "1e912c6a9f5c478b971957f039a7488a"
 
-const SERVERKEY_MIDTRANS = 'Mid-server-gTkDygDkvN-n64MqfCKHUYpF'
+const SERVERKEY_MIDTRANS = 'SB-Mid-server-T4agrfWABk-N9H2MlpDtG-uO'
 
     
 app.post('/user/registerUser', upload.single('filename'),async (req, res) => {
