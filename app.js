@@ -214,7 +214,7 @@ app.post("/cekBayar",async(req,res)=>{
                 // TODO set transaction status on your databaase to 'success'
                 pool.getConnection(function(err,conn){
                     console.log("berhasil bayar accept")
-                    conn.query(`update user set type=1 where transaction_id='${transaction_id}'`,function(error,result){
+                    conn.query(`update user set tipe='1' where transaction_id='${transaction_id}'`,function(error,result){
                         return res.status(200).send({
                             "status":"200",
                             "msg":"Berhasil upgrade"
@@ -227,7 +227,7 @@ app.post("/cekBayar",async(req,res)=>{
             pool.getConnection(function(err,conn){
                 console.log("berhasil bayar settlement")
                 console.log(transaction_id)
-                conn.query(`update user set type=1 where transaction_id='${transaction_id}'`,function(error,result){
+                conn.query(`update user set tipe='1' where transaction_id='${transaction_id}'`,function(error,result){
                     return res.status(200).send({
                         "status":"200",
                         "msg":"Berhasil upgrade"
