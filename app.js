@@ -773,7 +773,7 @@ function bayar(user,res,email){
             if(body.status_code == 201){
                 res.status(200).send({
                     "status":200,
-                    "msg":"silahkan Proses Pembayaran"
+                    "transaction-detail":body
                 })
                 pool.getConnection(function(err,conn){
                     conn.query("update user set transaction_id=? where email=?",[body.transaction_id,email], (error, rows, fields) => {
