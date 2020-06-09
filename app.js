@@ -41,7 +41,7 @@ let core = new midtransClient.CoreApi({
 
 var key = "1e912c6a9f5c478b971957f039a7488a"
 
-const SERVERKEY_MIDTRANS = 'Mid-server-gTkDygDkvN-n64MqfCKHUYpF'
+const SERVERKEY_MIDTRANS = 'SB-Mid-server-T4agrfWABk-N9H2MlpDtG-uO'
 
     
 app.post('/user/registerUser', upload.single('filename'),async (req, res) => {
@@ -772,10 +772,7 @@ function bayar(user,res,email){
             if(body.status_code == 201){
                 res.status(200).send({
                     "status":200,
-                    "email":email,
-                    "transaction ID": body.transaction_id,
-                    "msg":"subscribe berhasil",
-                    "transaction_detail":body
+                    "msg":"silahkan Proses Pembayaran"
                 })
                 pool.getConnection(function(err,conn){
                     conn.query("update user set transaction_id=? where email=?",[body.transaction_id,email], (error, rows, fields) => {
