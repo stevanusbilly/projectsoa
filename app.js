@@ -257,21 +257,23 @@ app.post('/lokasi/insertLokasi', function(req,res){
     pool.getConnection(function(err,conn){
         conn.query(`select * from lokasi where nama_lokasi = '${nama}'`,function(error,result){
             if(result.length < 1){
-                if(result.length < 10){
-                    id_penerbangan = id_penerbangan + "000" + result.length
-                }else if(result.length < 100){
-                    id_penerbangan = id_penerbangan + "00" + result.length
-                }else if(result.length < 1000){
-                    id_penerbangan = id_penerbangan + "0" + result.length
-                }else{
-                    id_penerbangan += result.length
-                }
-                conn.query("insert into lokasi values(?,?,?,?)",[id_penerbangan,nama,kota,negara], (error, rows, fields) => {
-                    res.status(200).send({
-                        "status":"200",
-                        "msg":"insert success"
-                    })
-                });
+                conn.query(`select * from lokasi`,function(error,result2){
+                    if(result2.length < 10){
+                        id_penerbangan = id_penerbangan + "000" + result2.length
+                    }else if(result2.length < 100){
+                        id_penerbangan = id_penerbangan + "00" + result2.length
+                    }else if(result2.length < 1000){
+                        id_penerbangan = id_penerbangan + "0" + result2.length
+                    }else{
+                        id_penerbangan += result2.length
+                    }
+                    conn.query("insert into lokasi values(?,?,?,?)",[id_penerbangan,nama,kota,negara], (error, rows, fields) => {
+                        res.status(200).send({
+                            "status":"200",
+                            "msg":"insert success"
+                        })
+                    });
+                })
             }
             else{
                 res.status(200).send({
