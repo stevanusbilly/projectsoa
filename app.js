@@ -254,35 +254,63 @@ app.post('/lokasi/insertLokasi', function(req,res){
     kota = req.body.kota_lokasi
     negara = req.body.negara_lokasi
     id_penerbangan = "L"
-    pool.getConnection(function(err,conn){
-        conn.query(`select * from lokasi where nama_lokasi = '${nama}'`,function(error,result){
-            if(result.length < 1){
-                conn.query(`select * from lokasi`,function(error,result2){
-                    if(result2.length < 10){
-                        id_penerbangan = id_penerbangan + "000" + result2.length
-                    }else if(result2.length < 100){
-                        id_penerbangan = id_penerbangan + "00" + result2.length
-                    }else if(result2.length < 1000){
-                        id_penerbangan = id_penerbangan + "0" + result2.length
-                    }else{
-                        id_penerbangan += result2.length
-                    }
-                    conn.query("insert into lokasi values(?,?,?,?)",[id_penerbangan,nama,kota,negara], (error, rows, fields) => {
-                        res.status(200).send({
-                            "status":"200",
-                            "msg":"insert success"
-                        })
-                    });
-                })
-            }
-            else{
-                res.status(200).send({
-                    "status":"403",
-                    "msg":"location already inserted"
-                })
-            }
+    const token = req.header("x-auth-token");
+    if(!token){
+        res.status(600).send({
+            "status":"600",
+            "msg":"token not found"
+        });
+    }
+    try{
+        user = jwt.verify(token,"proyeksoa");
+    }catch(err){
+        res.status(401).send({
+            "status":"401",
+            "msg":"token invalid"
+        });
+    }
+    if((new Date().getTime()/1000)-user.iat>3600){
+        return res.status(602).send({
+            "status":"602",
+            "msg":"token expired"
+        });
+    }
+    if(user.tipe == 0){ 
+        return res.status(403).send({
+            "status":"403",
+            "msg":"not authorized please upgrade your account"
         })
-    })
+    }else{
+        pool.getConnection(function(err,conn){
+            conn.query(`select * from lokasi where nama_lokasi = '${nama}'`,function(error,result){
+                if(result.length < 1){
+                    conn.query(`select * from lokasi`,function(error,result2){
+                        if(result2.length < 10){
+                            id_penerbangan = id_penerbangan + "000" + result2.length
+                        }else if(result2.length < 100){
+                            id_penerbangan = id_penerbangan + "00" + result2.length
+                        }else if(result2.length < 1000){
+                            id_penerbangan = id_penerbangan + "0" + result2.length
+                        }else{
+                            id_penerbangan += result2.length
+                        }
+                        conn.query("insert into lokasi values(?,?,?,?)",[id_penerbangan,nama,kota,negara], (error, rows, fields) => {
+                            res.status(200).send({
+                                "status":"200",
+                                "msg":"insert success"
+                            })
+                        });
+                    })
+                }
+                else{
+                    res.status(200).send({
+                        "status":"403",
+                        "msg":"location already inserted"
+                    })
+                }
+            })
+        })
+    }
 })
 
 app.get('/lokasi/searchlokasi', function(req,res){
