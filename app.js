@@ -52,23 +52,30 @@ app.post('/user/registerUser', upload.single('filename'),async (req, res) => {
     tipe = 0
     const password = req.body.password;
     api_hit = 50;
-    pool.getConnection(function(err,conn){
-        conn.query(`select * from user where email='${email}'`,function(error,result){
-            if(result.length > 0){
-                return res.status(403).send({
-                    "status":"403",
-                    "msg":"user already exist"
-                });
-            }else{
-                conn.query("insert into user values(?,?,?,?,?,?)",[email,password,nama,tipe,filename,""], (error, rows, fields) => {
-                    res.status(200).send({
-                        "status":"200",
-                        "msg":"register success"
-                    })
-                });
-            }
-        })
-    });
+    if(!filename){
+        return res.status(403).send({
+            "status":"503",
+            "msg":"mohon masukkan gambar"
+        });
+    }else{
+        pool.getConnection(function(err,conn){
+            conn.query(`select * from user where email='${email}'`,function(error,result){
+                if(result.length > 0){
+                    return res.status(403).send({
+                        "status":"403",
+                        "msg":"user already exist"
+                    });
+                }else{
+                    conn.query("insert into user values(?,?,?,?,?,?)",[email,password,nama,tipe,filename,""], (error, rows, fields) => {
+                        res.status(200).send({
+                            "status":"200",
+                            "msg":"register success"
+                        })
+                    });
+                }
+            })
+        });
+    }
 });
 
 app.post("/user/login",function(req,res){ 
