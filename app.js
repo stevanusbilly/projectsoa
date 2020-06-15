@@ -52,7 +52,7 @@ app.post('/user/registerUser', upload.single('filename'),async (req, res) => {
     tipe = 0
     const password = req.body.password;
     api_hit = 50;
-    if(!filename){
+    if(filename == ""){
         return res.status(403).send({
             "status":"503",
             "msg":"mohon masukkan gambar"
