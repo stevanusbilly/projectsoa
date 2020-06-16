@@ -147,7 +147,7 @@ app.post('/user/subscribe', (req, res) => {
                 if(result.length > 0){
                     if(result[0].password == pass){
                         conn.query(`select * from user where email='${email}'`,function(error,result0){
-                            if(result0.tipe == 0){
+                            if(result0[0].tipe == 0){
                                 bayar(result,res,email);
                             }else{
                                 return res.status(403).send({
