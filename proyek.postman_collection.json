@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "3588abfb-fd87-4af5-9e82-6be59082edb8",
 		"name": "proyek",
-		"description": "proyek SOA dengan tema cuaca menggunakan API third party yaitu https://www.weatherbit.io/api",
+		"description": "proyek SOA dengan tema travel guide dimana user dapat melihat kondisi tempat yang akan dikunjungi dan menambah perencanaan travel kesana menggunakan API third party yaitu https://www.weatherbit.io/api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -559,7 +559,13 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
@@ -706,7 +712,7 @@
 			"name": "User",
 			"item": [
 				{
-					"name": "register",
+					"name": "Register User",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -802,11 +808,11 @@
 								{
 									"key": "filename",
 									"type": "file",
-									"src": "/C:/Users/ASUS/Pictures/Camera/IMG20180701054950.jpg"
+									"src": "/C:/Users/ASUS/Pictures/Camera/IMG_20180814_130824.jpg"
 								},
 								{
 									"key": "email",
-									"value": "stevanus@gmail.com",
+									"value": "stevanus3@gmail.com",
 									"type": "text"
 								},
 								{
@@ -819,7 +825,10 @@
 									"value": "pass",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"formdata": {}
+							}
 						},
 						"url": {
 							"raw": "{{hero}}/user/registerUser",
@@ -835,7 +844,7 @@
 					"response": []
 				},
 				{
-					"name": "login",
+					"name": "Login User",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -848,17 +857,17 @@
 									"if (!data || data.length <= 0) {\r",
 									"    data = [\r",
 									"        {\r",
-									"            \"post_email\": \"bill@gmail.com\",\r",
+									"            \"post_email\": \"stevanus@gmail.com\",\r",
 									"            \"post_password\": \"pass\",\r",
 									"            \"post_status_code\" : 200,\r",
 									"            \"post_user_body\": {\r",
 									"                \"status\":200,\r",
 									"                \"msg\":\"login success\",\r",
-									"                \"token\":\"token\"\r",
+									"                \"token\":\"c\"\r",
 									"            }\r",
 									"        },\r",
 									"        {\r",
-									"            \"post_email\": \"bill@gmail.com\",\r",
+									"            \"post_email\": \"stevanus@gmail.com\",\r",
 									"            \"post_password\": \"pass\",\r",
 									"            \"post_status_code\" : 403,\r",
 									"            \"post_user_body\": {\r",
@@ -923,7 +932,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "stevanus@gmail.com",
+									"value": "stevanus2@gmail.com",
 									"type": "text"
 								},
 								{
@@ -931,7 +940,10 @@
 									"value": "pass",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{hero}}/user/login",
@@ -947,7 +959,7 @@
 					"response": []
 				},
 				{
-					"name": "update",
+					"name": "Update User",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1026,12 +1038,12 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "bill2@gmail.com",
+									"value": "stevanus@gmail.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "pass",
+									"value": "passbaru",
 									"type": "text"
 								},
 								{
@@ -1041,10 +1053,19 @@
 								},
 								{
 									"key": "password_baru",
-									"value": "passbaru",
+									"value": "pass",
 									"type": "text"
+								},
+								{
+									"key": "",
+									"value": "",
+									"type": "text",
+									"disabled": true
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{hero}}/user/updateUser",
@@ -1060,7 +1081,7 @@
 					"response": []
 				},
 				{
-					"name": "delete",
+					"name": "Delete User",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1147,15 +1168,28 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "stevanus@gmail.com",
+									"value": "stevanus3@gmail.com",
 									"type": "text"
 								},
 								{
 									"key": "password",
 									"value": "pass",
 									"type": "text"
+								},
+								{
+									"key": "id_admin",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "pass_admin",
+									"value": "admin",
+									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{hero}}/user/deleteUser",
@@ -1171,7 +1205,7 @@
 					"response": []
 				},
 				{
-					"name": "subscribe",
+					"name": "Subscribe User",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1189,8 +1223,7 @@
 									"            \"post_status_code\" : 200,\r",
 									"            \"post_user_body\": {\r",
 									"                \"status\":200,\r",
-									"                \"msg\":\"login success\",\r",
-									"                \"token\":\"token\"\r",
+									"                \"transaction-detail\":[]\r",
 									"            }\r",
 									"        },\r",
 									"        {\r",
@@ -1199,7 +1232,7 @@
 									"            \"post_status_code\" : 403,\r",
 									"            \"post_user_body\": {\r",
 									"                \"status\":\"403\",\r",
-									"                \"msg\":\"invalid email or password\"\r",
+									"                \"transaction-detail\":[]\r",
 									"            }\r",
 									"        }\r",
 									"    ]\r",
@@ -1267,7 +1300,10 @@
 									"value": "pass",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{hero}}/user/subscribe",
@@ -1289,7 +1325,7 @@
 			"name": "lokasi",
 			"item": [
 				{
-					"name": "insert lokasi",
+					"name": "Insert Lokasi",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1362,18 +1398,24 @@
 					],
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "x-auth-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0ZXZhbnVzQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicGFzcyIsInRpcGUiOiIxIiwiaWF0IjoxNTkyMjExMzY2fQ.NQMBzolsEC9CAWwQ8xOEllNQX8ghImOOOscfVAbaAbM",
+								"type": "text"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
 									"key": "nama_lokasi",
-									"value": "BNS",
+									"value": "coba",
 									"type": "text"
 								},
 								{
 									"key": "kota_lokasi",
-									"value": "blitar ",
+									"value": "bali",
 									"type": "text"
 								},
 								{
@@ -1381,7 +1423,10 @@
 									"value": "indonesia",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{hero}}/lokasi/insertLokasi",
@@ -1397,7 +1442,7 @@
 					"response": []
 				},
 				{
-					"name": "search lokasi",
+					"name": "Search Lokasi",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1492,7 +1537,10 @@
 									"value": "",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{hero}}/lokasi/searchlokasi",
@@ -1514,7 +1562,7 @@
 			"name": "list",
 			"item": [
 				{
-					"name": "add list",
+					"name": "Add List",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1590,7 +1638,7 @@
 						"header": [
 							{
 								"key": "x-auth-token",
-								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0ZXZhbnVzQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicGFzcyIsInRpcGUiOiIxIiwiaWF0IjoxNTkwNjQyMjc0fQ.QZaoTov3WnFDDyli81-Ouz_GNeQV6eg_E0_OW_8D_is",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN0ZXZhbnVzQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicGFzcyIsInRpcGUiOiIxIiwiaWF0IjoxNTkyMjExMzY2fQ.NQMBzolsEC9CAWwQ8xOEllNQX8ghImOOOscfVAbaAbM",
 								"type": "text"
 							}
 						],
@@ -1607,7 +1655,10 @@
 									"value": "10/10/2020",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{hero}}/list/addtolist",
@@ -1623,7 +1674,7 @@
 					"response": []
 				},
 				{
-					"name": "remove list",
+					"name": "Remove List",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -1669,10 +1720,10 @@
 									"flag = false;\r",
 									"\r",
 									"if (data && data.length > 0) {\r",
-									"    postman.setNextRequest(\"add list\");\r",
+									"    postman.setNextRequest(\"remove list\");\r",
 									"}\r",
 									"else {\r",
-									"    postman.setNextRequest(\"remove list\");\r",
+									"    postman.setNextRequest(\"my list\");\r",
 									"    flag = true;\r",
 									"}\r",
 									"\r",
@@ -1716,7 +1767,10 @@
 									"value": "10/10/2020",
 									"type": "text"
 								}
-							]
+							],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{hero}}/list/removelist",
@@ -1732,7 +1786,71 @@
 					"response": []
 				},
 				{
-					"name": "{{hero}}/list/viewMyList",
+					"name": "View My List",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "27381967-abf8-418c-a296-f33eb678e305",
+								"exec": [
+									"data = pm.environment.get(\"post_list\");\r",
+									"console.log(data);\r",
+									"\r",
+									"if (!data || data.length <= 0) {\r",
+									"    data = [\r",
+									"        {\r",
+									"            \"status\":\"200\",\r",
+									"            \"msg\": result\r",
+									"        },\r",
+									"         {\r",
+									"            \"status\":\"404\",\r",
+									"            \"msg\":\"No List Added for this user\"\r",
+									"        }\r",
+									"    ]\r",
+									"}\r",
+									"\r",
+									"let currentData = data.shift();\r",
+									"pm.environment.set(\"post_status_code\", currentData[\"post_status_code\"]);\r",
+									"pm.environment.set(\"post_user_body\", currentData[\"post_user_body\"]);\r",
+									"pm.environment.set(\"post_lokasi\", data);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "74421149-f688-4937-8c8d-0ab5e4cc02a7",
+								"exec": [
+									"data = pm.environment.get(\"post_list\");\r",
+									"flag = false;\r",
+									"\r",
+									"if (data && data.length > 0) {\r",
+									"    postman.setNextRequest(\"my list\");\r",
+									"}\r",
+									"else {\r",
+									"    postman.setNextRequest(\"add list\");\r",
+									"    flag = true;\r",
+									"}\r",
+									"\r",
+									"pm.test(\"Status code is check\", function () {\r",
+									"    pm.response.to.have.status(pm.variables.get(\"post_status_code\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Returned data is correct\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.eql(pm.variables.get(\"post_user_body\"));\r",
+									"});\r",
+									"\r",
+									"if (flag) {\r",
+									"    pm.environment.unset(\"post_status_code\");\r",
+									"    pm.environment.unset(\"post_user_body\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -1747,7 +1865,10 @@
 						],
 						"body": {
 							"mode": "urlencoded",
-							"urlencoded": []
+							"urlencoded": [],
+							"options": {
+								"urlencoded": {}
+							}
 						},
 						"url": {
 							"raw": "{{hero}}/list/viewMyList",
