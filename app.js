@@ -146,7 +146,17 @@ app.post('/user/subscribe', (req, res) => {
             conn.query(`select * from user where email='${email}'`,function(error,result){
                 if(result.length > 0){
                     if(result[0].password == pass){
-                        bayar(result,res,email);
+                        conn.query(`select * from user where email='${email}'`,function(error,result0){
+                            if(result0.tipe == '0'){
+                                bayar(result,res,email);
+                            }else{
+                                return res.status(403).send({
+                                    "status":"403",
+                                    "msg":"User already Subscribed"
+                                });
+                            }
+                        })
+                        
                     }else{
                         return res.status(403).send({
                             "status":"403",
