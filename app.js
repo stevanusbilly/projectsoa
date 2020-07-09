@@ -28,10 +28,10 @@ var upload = multer({ storage: storage })
 
 const pool = mysql.createPool({
     host:"sql12.freemysqlhosting.net",
-    user:"sql12346960",
-    password:"NARwuwPSKq",
+    user:"sql12353629",
+    password:"7KDC9blrPh",
     port:"3306",
-    database:"sql12346960",
+    database:"sql12353629",
 })
 
 let core = new midtransClient.CoreApi({
